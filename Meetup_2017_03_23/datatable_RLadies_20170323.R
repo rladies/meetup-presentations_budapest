@@ -123,6 +123,6 @@ data[species=="human", sum(weight, na.rm=TRUE)]
 data[jedi=="jedi", plot(weight,height)]
 
 ## We can use multiple commands in { ; }
-## For all the rows where the name contains "S", print column name, 
+## For all the rows of humans, print column name, 
 ## plot height against weight and return the mean of BMI.
 data[species=="human",{print(name); plot(weight, height); mean(BMI, na.rm=TRUE)}]
