@@ -1,0 +1,10 @@
+name,friend1,friend2,friend3
+Anakin Skywalker,Padme Amidala,Obi-Wan Kenobi,Sheev Palpatine
+Leia Skywalker,Luke Skywalker,Han Solo,
+Luke Skywalker,Leia Skywalker,Obi-Wan Kenobi,Han Solo
+Qui-Gon Jinn,Obi-Wan Kenobi,Yoda,
+Obi-Wan Kenobi,Qui-Gon Jinn,,
+Han Solo,Obi-Wan Kenobi,Luke Skywalker,Lando Calrissian
+Sheev Palpatine,Darth Maul,Dooku,Anakin Skywalker
+R2-D2,C-3PO,,
+C-3PO,R2-D2,,
