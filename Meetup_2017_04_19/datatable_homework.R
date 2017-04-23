@@ -27,10 +27,10 @@ names(data)
 ## leellenőrizheted, hogy az eredményül kapott adatod megegyezik-e
 ## a várt megoldással. 
 
-## A megoldások (az ábrát előállító .R állomány és egy png) május 16-a 
+## A megoldások (ez az .R állomány kiegészítve a kódokkal) május 16-a 
 ## éjfélig el is küldhetők a windhager.p.e@gmail.com címre, egyrészt így 
 ## kaphattok a munkátokról közvetlen visszajelzést, másrészt
-## az eredeti ábrához legközelebb jutók dicsőségük teljesen fényében 
+## a helyes megoldást beküldők dicsőségük teljesen fényében 
 ## egy vállveregetésben részesülnek majd. :)
 ## Nekünk nagyon hasznos lenne, hogy lássuk, ki meddig tudott eljutni 
 ## az önálló munkában, mert ezek alapján finomhangolhatjuk a következő 
