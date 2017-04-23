@@ -26,7 +26,17 @@ names(data)
 ## A segítségek után pedig az eredményeket is bemutatom, melynek segítségével 
 ## leellenőrizheted, hogy az eredményül kapott adatod megegyezik-e
 ## a várt megoldással. 
-## A megoldások kódját a következő meetup-on megbeszéljük.
+
+## A megoldások (az ábrát előállító .R állomány és egy png) május 16-a 
+## éjfélig el is küldhetők a windhager.p.e@gmail.com címre, egyrészt így 
+## kaphattok a munkátokról közvetlen visszajelzést, másrészt
+## az eredeti ábrához legközelebb jutók dicsőségük teljesen fényében 
+## egy vállveregetésben részesülnek majd. :)
+## Nekünk nagyon hasznos lenne, hogy lássuk, ki meddig tudott eljutni 
+## az önálló munkában, mert ezek alapján finomhangolhatjuk a következő 
+## workshop anyagát, kicsit képet kaphatnánk arról, kinek mi megy vagy 
+## mik okoztak általánosan nehézséget.
+## Természetesen megoldásokat a következő meetup-on megbeszéljük.
 
 ##################################
 ##        FELADATOK             ##
