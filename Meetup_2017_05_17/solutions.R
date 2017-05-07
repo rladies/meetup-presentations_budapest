@@ -64,7 +64,7 @@ hallgato <- adat %>%
 
 ## 4.1.2 Most konvertaljuk at a hallgatot szelesbol hosszu szerkezetbe
 ## a gather fuggveny segitsegevel
-hallgato_hosszu <- gather(data = hallgato, terulet, pontszam)
+hallgato_hosszu <- gather(data = hallgato, terulet, pontszam, c(1:3))
 
 ## 4.1.3 Keszitsunk egy olyan boxplotot, ami mindharom pontszamot tartalmazza.
 ggplot(hallgato_hosszu) +
