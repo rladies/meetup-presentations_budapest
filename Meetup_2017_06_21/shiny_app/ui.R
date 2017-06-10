@@ -1,0 +1,3 @@
+fluidPage(
+    title = "shiny-demo"
+)
