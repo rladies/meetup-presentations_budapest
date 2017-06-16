@@ -27,7 +27,7 @@ names(data_weather)
 ## leellenőrizheted, hogy az eredményül kapott adatod megegyezik-e
 ## a várt megoldással. 
 
-## A megoldások (ez az .R állomány kiegészítve a kódokkal) június 18-a 
+## A megoldások (ez az .R állomány kiegészítve a kódokkal) június 20-a 
 ## éjfélig el is küldhetők a windhager.p.e@gmail.com címre, egyrészt így 
 ## kaphattok a munkátokról közvetlen visszajelzést, másrészt
 ## a helyes megoldást beküldők dicsőségük teljesen fényében 
