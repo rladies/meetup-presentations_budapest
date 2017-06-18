@@ -8,8 +8,8 @@ fluidPage(
         ),
         checkboxGroupInput(
             'countries', "Countries to show:",
-            choices = unique(readRDS('cleaned_birth_data.rds')$country),
-            selected = unique(readRDS('cleaned_birth_data.rds')$country)
+            choices = unique(birth_dt$country),
+            selected = unique(birth_dt$country)
         ),
         width = 2
     ),
