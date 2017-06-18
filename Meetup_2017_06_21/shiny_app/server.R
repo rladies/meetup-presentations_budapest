@@ -1,5 +1,6 @@
 library("shiny")
 library("ggplot2")
+library("dplyr")
 
 function(input, output) {
     
@@ -9,10 +10,12 @@ function(input, output) {
         birth_dt
     )
     
-    output$birth_plot <- renderPlot(
-        ggplot(birth_dt, aes(x = age, y = num_birth, fill = education_level)) + 
+    output$birth_plot <- renderPlot({
+        filtered_birth_dt <- filter(birth_dt, year >= input$period[1] & year <= input$period[2])
+        
+        ggplot(filtered_birth_dt, aes(x = age, y = num_birth, fill = education_level)) + 
             geom_col(position = 'dodge') + 
             facet_grid(year ~ country) + 
             theme(legend.position = 'bottom', legend.direction = 'vertical')
-    )
+    })
 }

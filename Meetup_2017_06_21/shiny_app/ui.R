@@ -1,7 +1,11 @@
 fluidPage(
     title = "births shiny-demo",
     sidebarPanel(
-        p('for future widgets'),
+        sliderInput(
+            'period', 'Period to show:',
+            min = 2007, max = 2015, value = c(2007, 2015),
+            sep = ''
+        ),
         width = 2
     ),
     mainPanel(
