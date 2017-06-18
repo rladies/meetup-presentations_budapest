@@ -11,6 +11,7 @@ fluidPage(
             choices = unique(birth_dt$country),
             selected = unique(birth_dt$country)
         ),
+        actionButton('recalculate_plot', 'Apply filters on plot!'),
         width = 2
     ),
     mainPanel(

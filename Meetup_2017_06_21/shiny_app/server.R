@@ -19,9 +19,14 @@ function(input, output) {
     )
     
     output$birth_plot <- renderPlot({
-        ggplot(filtered_birth_dt(), aes(x = age, y = num_birth, fill = education_level)) + 
-            geom_col(position = 'dodge') + 
-            facet_grid(year ~ country) + 
-            theme(legend.position = 'bottom', legend.direction = 'vertical')
+        
+        input$recalculate_plot
+        
+        isolate(
+            ggplot(filtered_birth_dt(), aes(x = age, y = num_birth, fill = education_level)) + 
+                geom_col(position = 'dodge') + 
+                facet_grid(year ~ country) + 
+                theme(legend.position = 'bottom', legend.direction = 'vertical')
+        )
     })
 }
