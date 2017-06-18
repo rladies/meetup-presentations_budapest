@@ -26,4 +26,4 @@ cleaned_dt <- filtered %>%
     .[, country := as.factor(country)] %>% 
     as.data.frame()
 
-saveRDS(cleaned_dt, 'Meetup_2017_06_21/shiny_app/cleaned_birth_data.rds')
+saveRDS(cleaned_dt, 'Meetup_2017_06_21/eu_births_shiny_app/cleaned_birth_data.rds')

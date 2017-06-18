@@ -5,8 +5,6 @@ library("dplyr")
 function(input, output) {
     
     filtered_birth_dt <- reactive({
-        message('filtered birth dt function has been called with ', input$period)
-        
         filter(
             birth_dt,
             year >= input$period[1] & year <= input$period[2] &

@@ -1,5 +1,5 @@
 fluidPage(
-    title = "births shiny-demo",
+    title = "EU births shiny demo",
     sidebarPanel(
         sliderInput(
             'period', 'Period to show:',
