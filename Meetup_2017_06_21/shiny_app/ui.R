@@ -3,8 +3,9 @@ fluidPage(
     sidebarPanel(
         sliderInput(
             'period', 'Period to show:',
-            min = 2007, max = 2015, value = c(2007, 2015),
-            sep = ''
+            min = min(birth_dt$year), max = max(birth_dt$year),
+            value = c(min(birth_dt$year), max(birth_dt$year)),
+            sep = '', step = 1
         ),
         checkboxGroupInput(
             'countries', "Countries to show:",
