@@ -16,8 +16,16 @@ fluidPage(
         width = 2
     ),
     mainPanel(
-        plotOutput("birth_plot", height = "600px"),
-        dataTableOutput("birth_dt"),
+        tabsetPanel(
+            tabPanel(
+                title = 'summary plot',
+                plotOutput("birth_plot", height = "600px")
+            ),
+            tabPanel(
+                title = 'table',
+                dataTableOutput("birth_dt")
+            )
+        ),
         width = 10
     )
 )
