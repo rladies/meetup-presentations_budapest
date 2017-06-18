@@ -19,11 +19,15 @@ fluidPage(
         tabsetPanel(
             tabPanel(
                 title = 'summary plot',
-                plotOutput("birth_plot", height = "600px")
+                plotOutput("birth_summary_plot", height = "600px")
             ),
             tabPanel(
                 title = 'table',
                 dataTableOutput("birth_dt")
+            ),
+            tabPanel(
+                title = 'births by mothers\' education',
+                plotOutput('births_by_education_plot', height = "600px")
             )
         ),
         width = 10
