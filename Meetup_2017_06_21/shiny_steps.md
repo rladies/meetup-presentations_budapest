@@ -2,6 +2,8 @@
 
 The example used today is deployed [here](https://ildi-czeller.shinyapps.io/eu_births_shiny_app/).
 
+[shiny cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/01/shiny-cheatsheet.pdf)
+
 ### Prerequisites
 
 required packages: shiny, ggplot2, dplyr (ggplot2 and dplyr is in tidyverse)
