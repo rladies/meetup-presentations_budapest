@@ -1,5 +1,0 @@
-![](http://imgur.com/fkGX8qX)
-![](http://imgur.com/lvhQjrf)
-![](http://imgur.com/e9M01ES)
-![](http://imgur.com/eNuf5XU)
-![](http://imgur.com/QgQyPT9)
