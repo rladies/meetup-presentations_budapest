@@ -8,7 +8,7 @@ The example used today is deployed [here](https://ildi-czeller.shinyapps.io/eu_b
 
 required packages: shiny, ggplot2, dplyr (ggplot2 and dplyr is in tidyverse)
 ```
-install.packages(c('shiny', 'ggplot2', 'dplyr'))
+install.packages(c("shiny", "ggplot2", "dplyr"))
 ```
 
 download these 3 files to a directory:
@@ -37,10 +37,10 @@ In `server.R` assign a call to `renderPlot` to `output$birth_summary_plot`. To g
 ```
 # server.R
 
-ggplot(readRDS('cleaned_birth_data.rds'), aes(x = age, y = num_birth, fill = education_level)) + 
-    geom_col(position = 'dodge') + 
+ggplot(readRDS("cleaned_birth_data.rds"), aes(x = age, y = num_birth, fill = education_level)) + 
+    geom_col(position = "dodge") + 
     facet_grid(year ~ country) + 
-    theme(legend.position = 'bottom', legend.direction = 'vertical')
+    theme(legend.position = "bottom", legend.direction = "vertical")
 ```
 
 It is crucial that the ids are the same in your ui and server:
@@ -87,9 +87,9 @@ In `ui.R`, create your widget with params:
 # ui.R
 
 sliderInput(
-    inputId = 'period', label = 'Period to show:',
+    inputId = "period", label = "Period to show:",
     min = 2007, max = 2015, value = c(2007, 2015),
-    sep = '', step = 1
+    sep = "", step = 1
 )
 ```
 
@@ -143,7 +143,7 @@ This is within our server function, so no need to pass the `input$period` as par
 
 filtered_birth_dt <- function() {
     filter(
-        readRDS('cleaned_birth_data.rds'),
+        readRDS("cleaned_birth_data.rds"),
         year >= input$period[1] & year <= input$period[2]
     )
 }
@@ -157,7 +157,7 @@ To track how many times and with what parameters is this called, let's add a mes
 # server.R
 
 filtered_birth_dt <- function() {
-    message('filtered birth dt function has been called with ', input$period)
+    message("filtered birth dt function has been called with ", input$period)
     ...
 }
 ```
@@ -172,7 +172,7 @@ This is achieved with so called `reactive` expressions in `shiny`. You just have
 # server.R
 
 filtered_birth_dt <- reactive({
-    message('filtered birth dt function has been called with ', input$period)
+    message("filtered birth dt function has been called with ", input$period)
     ...
 })
 ```
@@ -196,9 +196,9 @@ fluidPage(
 
 ```
 sliderInput(
-    inputId = 'period', label = 'Period to show:',
+    inputId = "period", label = "Period to show:",
     min = min_year, max = max_year, value = c(min_year, max_year),
-    sep = '', step = 1
+    sep = "", step = 1
 )
 ```
 
@@ -224,7 +224,7 @@ Hints:
 # ui.R
 
 checkboxGroupInput(
-    inputId = 'countries', label = "Countries to show:",
+    inputId = "countries", label = "Countries to show:",
     choices = unique(...),
     selected = ...
 ),
@@ -234,7 +234,7 @@ checkboxGroupInput(
 # server.R
 
 filter(
-    readRDS('cleaned_birth_data.rds'),
+    readRDS("cleaned_birth_data.rds"),
     year >= input$period[1] & year <= input$period[2] &
         country %in% input$countries
 )
@@ -255,7 +255,7 @@ However, if your calculation depends on other input values as well you want to s
 ```
 # ui.R
 
-actionButton(inputId = 'recalculate_plot', label = 'Apply filters on plot!')
+actionButton(inputId = "recalculate_plot", label = "Apply filters on plot!")
 ```
 
 ```
@@ -267,9 +267,9 @@ output$birth_plot <- renderPlot({
     
     isolate(
         ggplot(filtered_birth_dt(), aes(x = age, y = num_birth, fill = education_level)) + 
-            geom_col(position = 'dodge') + 
+            geom_col(position = "dodge") + 
             facet_grid(year ~ country) + 
-            theme(legend.position = 'bottom', legend.direction = 'vertical')
+            theme(legend.position = "bottom", legend.direction = "vertical")
     )
 })
 ```
@@ -298,7 +298,7 @@ filtered_birth_dt() %>%
     summarise(num_birth = sum(num_birth))
 ```
 
-For the plot you may use `geom_area(position = 'fill')`
+For the plot you may use `geom_area(position = "fill")`
 
 **Q**: Put the summary table alongside of this plot and try different layouts: below, alongside.
 
@@ -318,4 +318,4 @@ tabPanel(
 
 **Q**: Add a new tab and a new user input widget to show min/max/avg/median of age by year, country, education level.
 
-*Hint*: use `selectInput(..., choices = c('min', 'max', 'mean', 'median'))` to control the shown metric.
+*Hint*: use `selectInput(..., choices = c("min", "max", "mean", "median"))` to control the shown metric.
