@@ -20,7 +20,11 @@ At any point to run your app, either press the green run App button in RStudio, 
 
 ### Step 1 - try where we left off in June
 
-run the app
+Check whether you can run the app.
+
+The ui tells us what type of inputs and outputs has to be shown in what layout, and contains static content not depending on data on calculation: e.g. labels, menu bars, etc. The layout is based on a 12 wide rectangular grid system. 
+
+The server is responsible for calculations and filling the input and output containers in the ui with actual content.
 
 ### Step 5 - use reactive expressions
 
