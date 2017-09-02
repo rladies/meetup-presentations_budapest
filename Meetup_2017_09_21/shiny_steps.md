@@ -11,126 +11,16 @@ required packages: shiny, ggplot2, dplyr (ggplot2 and dplyr is in tidyverse)
 install.packages(c("shiny", "ggplot2", "dplyr"))
 ```
 
-download these 3 files to a directory:
+download these 3 files to a directory from `eu_births_shiny_app` folder:
 - `server.R`
 - `ui.R`
-- `cleaned_birth_data.rds`
-
-To download `global.R` and `app.R` as well is optional.
-
-To work in RStudio is highly recommended, but not necessary.
+- `cleaned_birth_data.rds` 
 
 At any point to run your app, either press the green run App button in RStudio, or paste the following to your R console: `shiny::runApp(launch.browser = TRUE)`
 
-### Step 1 - try minimal sample app
+### Step 1 - try where we left off in June
 
-**Q**: Run your app, it already shows our raw data with interactive searching.
-
-The ui part is about what type of components to show in what layout, and the server is about what to show.
-
-### Step 2 - add summary plot
-
-In `ui.R` add a new tab with title `birth summary` containing a `plotOutput` with id `birth_summary_plot`.
-
-In `server.R` assign a call to `renderPlot` to `output$birth_summary_plot`. To generate the plot, put the following code inside the `renderPlot` function. Do not forget to add `library(ggplot2)` or `library(tidyverse)` to the beginning of your `server.R` file.
-
-```
-# server.R
-
-ggplot(readRDS("cleaned_birth_data.rds"), aes(x = age, y = num_birth, fill = education_level)) + 
-    geom_col(position = "dodge") + 
-    facet_grid(year ~ country) + 
-    theme(legend.position = "bottom", legend.direction = "vertical")
-```
-
-It is crucial that the ids are the same in your ui and server:
-
-```
-# ui.R
-
-plotOutput("whatever_id_you_type_in_here")
-
-# server.R
-
-output$whatever_id_you_type_in_here <- renderPlot(...)
-```
-
-### Optional step 3 - adjust layout
-
-you can adjust the relative width of main elements, and also the absolute height of plots:
-
-```
-# ui.R
-
-sidebarPanel(..., width = 2)
-```
-
-```
-# ui.R
-
-plotOutput(..., height = "600px")
-```
-
-**Q**: What is the default value of width for `sidebarPanel`, `mainPanel`, and for the height of `plotOutput`?
-
-### Step 4 - filter data on period of years
-
-Raw data contains data for years from 2007 to 2015. The user may want to focus on a narrower period, but want to change this period dynamically.
-
-You can receive user input and use it on the server side with widgets. Examples are [here](https://shiny.rstudio.com/gallery/widget-gallery.html).
-
-Let's use a slider range for filtering!
-
-In `ui.R`, create your widget with params:
-
-```
-# ui.R
-
-sliderInput(
-    inputId = "period", label = "Period to show:",
-    min = 2007, max = 2015, value = c(2007, 2015),
-    sep = "", step = 1
-)
-```
-
-You can use the current value of the slider at all times with `input$period`. This is a range slider, so its value is a vector of length 2. `input$period[1]` is the lower endpoint.
-
-Use `dplyr::filter` inside your `renderPlot` function to keep data only within the selected period.
-
-```
-# server.R
-
-filter(..., year >= input$period[1] & year <= ...)
-```
-
-I advise the use of the pipe, but it is optional.
-
-Without pipe:
-
-```
-ggplot(filter(readRDS(...), ...), aes(...)) + 
-    geom_col(...)
-```
-or
-```
-birth_dt <- readRDS(...)
-
-filtered_dt <- filter(birth_dt, ...)
-
-ggplot(filtered_dt, aes(...)) + 
-    geom_col(...)
-```
-
-With pipe:
-
-```
-readRDS(...) %>%
-    filter(year >= input$period[1] & ...) %>%
-    ggplot(aes(...)) + 
-    geom_col(...)
-```
-
-**Q**: Apply the same filtering in the call to `renderDataTable`.
+run the app
 
 ### Step 5 - use reactive expressions
 
@@ -177,6 +67,11 @@ filtered_birth_dt <- reactive({
 })
 ```
 **Q**: Run your app and verify that the function now gets called only once upon every change of the slider.
+
+A reactive expression is essentially three things together:
+ - a recipe: the code tells **how** to calculate the result **if** it needs to be calculated
+ - a value: the result calculated the last time this expression was evaluated
+ - a `TRUE/FALSE` value: whether the last calculated value is still up-to-date considering the possible change in dependencies
 
 ### Optional step 6 - use `global.R` for values available to ui and server as well
 
