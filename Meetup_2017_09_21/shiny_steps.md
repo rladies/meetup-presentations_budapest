@@ -18,11 +18,11 @@ download these 3 files to a directory from `eu_births_shiny_app` folder:
 
 At any point to run your app, either press the green run App button in RStudio, or paste the following to your R console: `shiny::runApp(launch.browser = TRUE)`
 
-### Step 1 - try where we left off in June
+### Step 0 - try where we left off in June
 
 Check whether you can run the app.
 
-The ui tells us what type of inputs and outputs has to be shown in what layout, and contains static content not depending on data on calculation: e.g. labels, menu bars, etc. The layout is based on a 12 wide rectangular grid system. 
+The ui tells us what type of inputs and outputs has to be shown in what layout, and contains static content not depending on data or calculation: e.g. labels, menu bars, etc. The layout is based on a 12 wide rectangular grid system. 
 
 The server is responsible for calculations and filling the input and output containers in the ui with actual content.
 
@@ -77,7 +77,7 @@ A reactive expression is essentially three things together:
  - a value: the result calculated the last time this expression was evaluated
  - a `TRUE/FALSE` value: whether the last calculated value is still up-to-date considering the possible change in dependencies
 
-### Optional step 6 - use `global.R` for values available to ui and server as well
+### Step 6 - use `global.R` for values available to ui and server as well
 
 Now the endpoints of the period is hardcoded into `ui.R` (2007, 2015) although it comes from the raw data used. Let's read these values from the data in `ui.R`.
 
@@ -113,7 +113,7 @@ birth_dt <- readRDS("cleaned_birth_data.rds")
 
 Delete this line from ui and server, use the available birth_dt instead.
 
-### Optional step 7 - practice filtering based on user input
+### Step 7 - practice filtering based on user input
 
 **Q**: Add the option of filtering for an arbitrary subset of countries.
 
@@ -175,29 +175,13 @@ output$birth_plot <- renderPlot({
 
 Now your renderPlot function encloses multiple expressions so don't forget to enclose them with `{}`.
 
-**Q**: Notice that the table recalculated upon every filter change but the plot does not.
+**Q**: Notice that the table recalculated upon every filter change but the plot did not.
 
 **Q**: What happens if you leave the call to `isolate` out?
 
 **Q**: What can you use if you want to wait for the button press at the first time as well?
 
-*Hint*: `eventReactive`
-
 ### Practice
-
-**Q**: add a new tab with a plot on ratio of all births by education, regardless of mother's age.
-
-*Hint*:
-
-for aggregating you can use `dplyr::group_by` and `dplyr::summarise`:
-
-```
-filtered_birth_dt() %>% 
-    group_by(year, country, education_level) %>% 
-    summarise(num_birth = sum(num_birth))
-```
-
-For the plot you may use `geom_area(position = "fill")`
 
 **Q**: Put the summary table alongside of this plot and try different layouts: below, alongside.
 
