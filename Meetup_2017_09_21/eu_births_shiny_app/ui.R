@@ -4,8 +4,13 @@ fluidPage(
     
     sidebarPanel(
         sliderInput(
-            inputId = "period", label = "Period to show:",
-            min = 2007, max = 2015, value = c(2007, 2015),
+            inputId = "period_lower", label = "Period to show:",
+            min = 2007, max = 2015, value = 2007,
+            sep = "", step = 1
+        ),
+        sliderInput(
+            inputId = "period_upper", label = "Period to show:",
+            min = 2007, max = 2015, value = 2015,
             sep = "", step = 1
         ),
         width = 2

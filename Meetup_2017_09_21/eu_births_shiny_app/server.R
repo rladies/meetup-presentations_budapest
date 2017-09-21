@@ -4,21 +4,26 @@ library("dplyr")
 
 function(input, output) {
     
-    # getFilteredBirthDt <- function() {
-    #     message("filtered birth dt function has been called with ", input$period)
-    # 
-    #     readRDS("cleaned_birth_data.rds") %>%
-    #         filter(year >= input$period[1] & year <= input$period[2])
-    # }
-    
-    output$birth_dt <- renderDataTable(
+    filterFromBelow <- reactive({
+        message("filter from below called with ", input$period_lower)
+        
         readRDS("cleaned_birth_data.rds") %>%
-            filter(year >= input$period[1] & year <= input$period[2])
-    )
+            filter(year >= input$period_lower)
+    })
+    
+    getFilteredBirthDt <- reactive({
+        message("filtered birth dt function has been called with ", input$period_upper)
+
+        filterFromBelow() %>%
+            filter(year <= input$period_upper)
+    })
+    
+    output$birth_dt <- renderDataTable({
+        getFilteredBirthDt()
+    })
     
     output$birth_summary_plot <- renderPlot({
-        readRDS("cleaned_birth_data.rds") %>%
-            filter(year >= input$period[1] & year <= input$period[2]) %>% 
+        getFilteredBirthDt() %>% 
             ggplot(aes(x = age, y = num_birth, fill = education_level)) + 
             geom_col(position = "dodge") + 
             facet_grid(year ~ country) + 
