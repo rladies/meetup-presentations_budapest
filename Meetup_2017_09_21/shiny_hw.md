@@ -1,4 +1,6 @@
 ## Homework assignments after shiny session 2016-09-21
+
+Please send your solutions to czeildi@gmail.com till 28th October in order to get feedback.
  
 If you did not fully follow the meetup, check the final code in the Meetup_2017_09_21/eu_births_shiny_app folder and run the app on your computer, play with it!
 
