@@ -10,7 +10,7 @@ The example used at the meetup is deployed [here](https://ildi-czeller.shinyapps
 
 At any point to run your app, either press the green run App button in RStudio, or paste the following to your R console: `shiny::runApp(launch.browser = TRUE)`
 
-### Questions (you may submit any subset):
+### Questions (you may submit any subset to czeildi `at` gmail `pont` com):
 
 - use a different `id` for the shown table. check if the app is still working
 
