@@ -43,7 +43,7 @@ ggplot(as.data.frame(labor_prob)) +
 
 #########################################################################################
 ## Feladat: Vegyuk a jo oreg pisa adatokat es nezzunk ra arra, hogy
-## a lanyok es a fiuk varhato matematika pontszamanak
+## a lanyok vagy a fiuk matematika pontszamanak
 ## az atlaga kulonbozik-e?
 #########################################################################################
 
@@ -56,7 +56,7 @@ head(pisa)
 ## 3.2 Rajzoljunk surusegdiagramot a matematika pontszamokbol!
 
 ggplot(pisa) +
-  geom_density(aes(x = PontMat, col = Nem))
+  geom_density(aes(x = PontMat, col = IskolaTipusa))
 
 ## 3.3 Mekkorak az atlagok? Mekkora a kulonbseg?
 mat <- pisa %>%
@@ -91,7 +91,7 @@ diff_gen <- diff_gen[[1]]
 ## csinaljunk egy eloszlast! Abban az eloszlasban hol van a kapott ertek?
 
 diffs <- numeric(0)
-for(i in 1:10000) {
+for(i in 1:1000) {
   print(i)
   pisagen <- pisa %>%
     mutate(ujnem = sample(c("Ferfi", "No"), size = length(Nem), replace = T)) %>%
@@ -115,71 +115,74 @@ ggplot(as.data.frame(diffs)) +
   geom_vline(aes(xintercept = diff))
 
 ## Tanulsagok?
-## A kulonbseg mintha normal eloszlas lenne
+## A kulonbseg varhato erteke nulla kozeleben van es a szorasa is eleg pici
 mean(diffs)
-sd(diffs)
-ferfiak <- pisa %>% filter(Nem == "Ferfi") %>% select(PontMat)
-nok <- pisa %>% filter(Nem == "No") %>% select(PontMat)
-var(ferfiak)
+var(diffs)
 
-## 3.6 Onallo feladat: Csinaljuk vegig ezt az egeszet a termeszettudomanyi pontszammal
-##a 3.3 es 3.5 kodok kis
+
+## 3.6 Onallo feladat: Nezzuk meg a termeszettudomanyi pontszamokat
+## a 3.3 es 3.5 kodok kis
 ## modositasaval!
 
-
-## 3.6 Ellenorizzuk le az ertekeket a t.test() segitsegevel!
+## 3.6 Nezzuk meg a beepitett t.test() kimenetet!
 ## Adjuk meg a ket vektort, aminek a varhato erteket ossze
 ## szeretnenk hasonlitani. Az alternativ hipotezis legyen
 ## mondjuk greater, az var.equal parametert hagyjuk
-## nyugodtan FALSE-on.
+## nyugodtan FALSE-on. 
+## A teszt inditasa elott nezzuk meg, mik a bemeneti feltetelezesek a mintara
+## vonatkozolag, peldaul itt:
+## http://stattrek.com/hypothesis-test/difference-in-means.aspx?Tutorial=AP!
 
 t.test(pisa %>% filter(Nem == "Ferfi") %>% select(PontMat), 
        pisa %>% filter(Nem == "No") %>% select(PontMat),
        alternative = "greater")
 
 #########################################################################################
-## JOINOK, MERGE-OK
+## FUGGETLENSEG VIZGALATA DISZKRET ERTEKET KOZOTT
 #########################################################################################
 
 #########################################################################################
-## Feladat: Nezzuk meg, vajon a magyar eredmenyek mennyiben ternek el mas orszagok
-## eredmenyeitol!
+## Feladat: Nezzuk meg, hogy a nemek eloszlasa az egyes iskolatipusokban milyen!
 #########################################################################################
 
-## 4.1 Olvassuk be a mintavetelezett, osszes orszagot tartalmazo allomanyt
-## (pisa_small.csv)!
+## 4.1 Szamoljuk ki az aranyokat!
+mat <- pisa %>%
+  group_by(Nem, IskolaTipusa) %>%
+  summarize(n = n())
 
-## setwd(?)
-orszagok <- read.csv("pisa_small.csv")
+ggplot(mat) +
+  geom_bar(aes(x = Nem, y = n, fill = IskolaTipusa), stat = "identity")
 
-## 4.2 Szamoljuk ki minden orszagra az atlagos matematika pontszamot!
+## 4.2 Futtassunk le egy chi negyzet tesztet (chi square independence test), amiben
+## megvizsgaljuk, vajon fuggetlenek-e a valtozok!
+## A teszt inditasa elott nezzuk meg, mik a bemeneti feltetelezesek a mintara
+## vonatkozolag, mondjuk itt: http://stattrek.com/chi-square-test/independence.aspx!
 
+## 4.2.1 Nezzuk meg a leirasban, milyen tipusu bemenetet var a chisq.test()!
+?chisq.test
 
+M <- as.table(rbind(c(762, 327, 468), c(484, 239, 477)))
+dimnames(M) <- list(gender = c("F", "M"),
+                    party = c("Democrat","Independent", "Republican"))
+(M)
+(Xsq <- chisq.test(M))  # Prints test summary
+Xsq$observed   # observed counts (same as M)
+Xsq$expected   # expected counts under the null
 
+## 4.2.2 Alakitsuk at a sajat bemenetunket is ilyenne, mondjuk egy table() hivassal!
+ch_input <- table(pisa[, c("Nem", "IskolaTipusa")])
 
-## 4.3 Toltsuk be a maps csomagot es keszitsunk egz world_data valtozot,
-## amiben egy vilagterkep koordinatait talaljuk!
+## 4.2.3 Futtassuk le a tesztet es nezzuk meg, mi lett volna az 'elvart' bemenet
+## a fuggetlensegi feltetelezes mellett!
+chisq_result <- chisq.test(ch_input)
 
-library(maps)
-world_map <- map_data("world")
-head(world_map)  
+exp <- as.data.frame(chisq_result$expected)
+exp$Nem <- rownames(exp)
 
-## 4.4 Rajzoljunk ki ebbol egy terkepet!
+exp<- exp %>%
+  gather(key = "IskolaTipusa", "n", -Nem)
+  
+ggplot(exp) +
+  geom_bar(aes(x = Nem, y = n, fill = IskolaTipusa), stat = "identity")
 
-ggplot(world_map) +
-  geom_polygon(aes(x = long, y = lat, group = group))
-
-## 4.5 Joinoljuk (merge-oljuk) ezt a terkep adatsort a mi sajat keszitesu
-## atlagos pontszamot tartalmazo adatsorunkkal!
-
-
-
-## 4.5 Rajzoljuk ki meg egyszer a terkepet ugy, hogy az egyes orszagok
-## az atlagos pontszam szerint legyenek szinezve!
-
-
-
-
-## 4.6 Zoomoljunk ra Europa kornyekere! 
-## ggplot2 cheat sheet: https://www.rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf
 
