@@ -26,18 +26,18 @@ library(tidyr)
 
 ## 2.1 Szimulaljuk le az eloszlast az rnorm() fuggveny segitsegevel!
 
-labor_prob <- rnorm(n = 100000, mean = 40, sd = 2)
+
 
 ## 2.2 Hany ertek kisebb, mint a 349/7?
 
-sum(labor_prob < 349 / 7)
+
 
 
 ## 2.3 Rajzoljuk ki az eloszlast es az erteket!
 
-ggplot(as.data.frame(labor_prob)) +
-  geom_histogram(aes(x = labor_prob)) +
-  geom_vline(aes(xintercept = 349 / 7))
+
+
+
 
 #########################################################################################
 ## SZIMULACIO: KET ELOSZLAS VIZSGALATA
@@ -58,8 +58,8 @@ head(pisa)
 
 ## 3.2 Rajzoljunk surusegdiagramot a matematika pontszamokbol!
 
-ggplot(pisa) +
-  geom_density(aes(x = PontMat, col = Nem))
+
+
 
 ## 3.3 Mekkorak az atlagok? Mekkora a kulonbseg?
 mat <- pisa %>%
@@ -83,91 +83,37 @@ diff <- diff[[1]]
 
 sample(c("Ferfi", "No"), size = 10, replace = T)
 
-pisagen <- pisa %>%
-  mutate(ujnem = sample(c("Ferfi", "No"), size = length(Nem), replace = T)) %>%
-  select(ujnem, PontMat)
 
-mat <- pisagen %>%
-  group_by(ujnem) %>%
-  summarize(atlag = mean(PontMat))
 
-diff_gen <- mat %>% filter(ujnem == "Ferfi") %>% select(atlag) - 
-  mat %>% filter(ujnem == "No") %>% select(atlag)
 
-diff_gen <- diff_gen[[1]]
-(diff_gen)
+
+
+
+
+
+
 
 ## 3.5 Szimulaljuk le ugyanezt mondjuk 1000-szer es a kapott kulonbseg ertekekbol
 ## csinaljunk egy eloszlast! Abban az eloszlasban hol van a kapott ertek?
 
-diffs <- numeric(0)
-for(i in 1:1000) {
-  print(i)
-  pisagen <- pisa %>%
-    mutate(ujnem = sample(c("Ferfi", "No"), size = length(Nem), replace = T)) %>%
-    select(ujnem, PontMat)
-  
-  mat <- pisagen %>%
-    group_by(ujnem) %>%
-    summarize(atlag = mean(PontMat))
-  
-  diff_gen <- mat %>% filter(ujnem == "Ferfi") %>% select(atlag) - 
-    mat %>% filter(ujnem == "No") %>% select(atlag)
-  
-  diff_gen <- diff_gen[[1]]
-  diffs <- c(diffs, diff_gen)
-}
 
-sum(abs(diffs) < diff)
 
-ggplot(as.data.frame(diffs)) +
-  geom_histogram(aes(x = diffs)) +
-  geom_vline(aes(xintercept = diff))
+
 
 ## Tanulsagok?
 ## A kulonbseg varhato erteke nulla kozeleben van es
 ## a szorasnegyzete is eleg pici
-mean(diffs)
-var(diffs)
+
 
 
 ## 3.6 Onallo feladat: Nezzuk meg a termeszettudomanyi pontszamokat
 ## a 3.3 es 3.5 kodok kis
 ## modositasaval!
-mat <- pisa %>%
-  group_by(Nem) %>%
-  summarize(atlag = mean(PontTermTud))
-
-diff <- mat %>% filter(Nem == "Ferfi") %>% select(atlag) - 
-  mat %>% filter(Nem == "No") %>% select(atlag)
-
-diff <- diff[[1]]
-(diff)
 
 
-diffs <- numeric(0)
-for(i in 1:1000) {
-  print(i)
-  pisagen <- pisa %>%
-    mutate(ujnem = sample(c("Ferfi", "No"), size = length(Nem), replace = T)) %>%
-    select(ujnem, PontTermTud)
-  
-  mat <- pisagen %>%
-    group_by(ujnem) %>%
-    summarize(atlag = mean(PontTermTud))
-  
-  diff_gen <- mat %>% filter(ujnem == "Ferfi") %>% select(atlag) - 
-    mat %>% filter(ujnem == "No") %>% select(atlag)
-  
-  diff_gen <- diff_gen[[1]]
-  diffs <- c(diffs, diff_gen)
-}
 
-sum(abs(diffs) < diff)
 
-ggplot(as.data.frame(diffs)) +
-  geom_histogram(aes(x = diffs)) +
-  geom_vline(aes(xintercept = diff))
+
 
 #########################################################################################
 ## KERETRENDSZEREK: KET MINTA ATLAGANAK AZONOSSAGA
@@ -189,13 +135,9 @@ ggplot(as.data.frame(diffs)) +
 ## vonatkozolag, peldaul itt:
 ## http://stattrek.com/hypothesis-test/difference-in-means.aspx?Tutorial=AP!
 
-t.test(pisa %>% filter(Nem == "Ferfi") %>% select(PontMat), 
-       pisa %>% filter(Nem == "No") %>% select(PontMat),
-       alternative = "two.sided", conf.level = 0.95)
 
-t.test(pisa %>% filter(Nem == "Ferfi") %>% select(PontTermTud), 
-       pisa %>% filter(Nem == "No") %>% select(PontTermTud),
-       alternative = "two.sided", conf.level = 0.95)
+
+
 
 #########################################################################################
 ## KERETRENDSZEREK: FUGGETLENSEG VIZSGALATA DISZKRET ERTEKET KOZOTT
@@ -206,12 +148,8 @@ t.test(pisa %>% filter(Nem == "Ferfi") %>% select(PontTermTud),
 #########################################################################################
 
 ## 5.1 Szamoljuk ki az aranyokat!
-mat <- pisa %>%
-  group_by(Nem, IskolaTipusa) %>%
-  summarize(n = n())
 
-ggplot(mat) +
-  geom_bar(aes(x = Nem, y = n, fill = IskolaTipusa), stat = "identity")
+
 
 ## 5.2 Futtassunk le egy chi negyzet tesztet (chi square independence test), amiben
 ## megvizsgaljuk, vajon fuggetlenek-e a valtozok!
@@ -230,19 +168,20 @@ Xsq$observed   # observed counts (same as M)
 Xsq$expected   # expected counts under the null
 
 ## 5.2.2 Alakitsuk at a sajat bemenetunket is ilyenne, mondjuk egy table() hivassal!
-ch_input <- table(pisa[, c("Nem", "IskolaTipusa")])
+
+
 
 ## 5.2.3 Futtassuk le a tesztet es nezzuk meg, mi lett volna az 'elvart' bemenet
 ## a fuggetlensegi feltetelezes mellett!
-chisq_result <- chisq.test(ch_input)
-(chisq_result)
 
+
+##
 exp <- as.data.frame(chisq_result$expected)
 exp$Nem <- rownames(exp)
 
 exp<- exp %>%
   gather(key = "IskolaTipusa", "n", -Nem)
-  
+
 ggplot(exp) +
   geom_bar(aes(x = Nem, y = n, fill = IskolaTipusa), stat = "identity")
 
@@ -258,21 +197,11 @@ ggplot(exp) +
 
 ## 6.1. Rajzoljunk surusegdiagramot ra!
 
-ggplot(pisa) +
-  geom_density(aes(x = PontMat), color = "blue") + 
-  geom_density(aes(x = PontTermTud), color = "darkred")
 
-
-ggplot(pisa) +
-  geom_density(aes(x = PontMat), color = "blue") + 
-  geom_density(aes(x = PontSzovegertes), color = "darkred")
 
 ## 6.2 Futtassunk az azonossagvizsgalatra egy Kolmogorov-Szmirnov tesztet!
-ks.test(unlist(pisa %>% select(PontTermTud)), 
-       unlist(pisa %>%  select(PontMat)))
 
-ks.test(unlist(pisa %>% select(PontSzovegertes)), 
-        unlist(pisa %>%  select(PontMat)))
+
 
 
 #########################################################################################
@@ -303,38 +232,21 @@ hotels %>%
 ## 7.2 Nezzuk meg, az egzes csoport tobb penzt hozott-e a konyhara, azaz az atlagos
 ## bevetali aranyuk nagyobb-e!
 
-mean(hotels$purchase_value[full$category == 'Test']) -
-  mean(hotels$purchase_value[full$category == "Control"])
 
-t.test(hotels$purchase_value[full$category == 'Test'],
-       hotels$purchase_value[full$category == "Control"])
 
 
 ## 7.3 Nezzunk konverzios ratat a control es a teszt csoportra!
-hotels %>%
-  group_by(category) %>%
-  summarise(konv  = sum(purchase_value > 0))
 
-t.test((hotels$purcahse_value > 0)[full$category == 'Test'],
-       (hotels$purcahse_value > 0 )[full$category == "Control"])
+
+
 ## Melyik a "jobb" valtozat akkor?
 
 ## 7.4 Milyen volt az open es a click rate? 
-full %>%
-  group_by(category, clicked) %>%
-  summarize( n = n())
 
-t.test((full$clicked  == "Yes")[full$category == 'Test'],
-       (full$clicked == "Yes" )[full$category == "Control"])
+
 
 ## 7.4 Hol nyitottak meg azokat az e-maileket, ahol rakattintottak a gombra?
 ## Futtassunk le egy tesztet, amiben lemerjuk, a click rate fuggetlen-e a
 ## platformtol!
-opens <- full %>%
-  filter(clicked == "Yes") %>% 
-  group_by(category, platform) %>%
-  summarize( n = n())
-
-chisq.test(table(full[full$clicked == "Yes", c("category", "platform")]))
 
 
