@@ -1,0 +1,105 @@
+---
+title: "Statisztikai tesztelés bevezető óra házi feladat"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## Használati útmutató
+
+Ez az állomány a szokásostól eltérően nem .R, hanem .Rmd kiterjesztésű.
+
+A jó hír, hogy kombinálni tudja a szöveges leírásokat és a kódrészleteket/ábrákat, ezzel nagyszerűen segíti a reprodukálható elemzési folyamatokat és a házi feladatok dokumentációját. :) A rossz hír, hogy ahhoz, hogy HTML-t vagy PDF-et generáljunk belőle, szükség van a **knitr** csomag telepítésére.
+
+A telepítés után az RStudioban található **Knit** gombra való kattintással máris generálhatjuk a dokumentumunkat, ami nemcsak a kérdésekre adott válaszainkat, de az elemző kódot is tartalmazza majd. Ha esetleg a környezet megkérdezné, használjunk UTF-8 kódolást.
+
+A házi feladatokat a novemberi meetupot megelőző nap délig lehet beküldeni az agi@rladies.org címre. Nemcsak teljes, de elkezdett házi feladatok is beküldhetők, mindenki kap egy néhány soros visszajelzést a munkájáról.
+
+Fontos: kérünk benneteket, az e-mail tárgya legyen ezúttal **R-Ladies tesztelés házi feladat** és csatolmányként tartalmazza az Rmd és a belőle generált HTML vagy pdf állományt is.
+
+## Esettanulmány
+
+A házi feladatban egy konkrét A/B tesztet kell hogy kiértékeljünk az októberi alkalmon megismert tesztelési függvények segítségével. 
+
+Tegyük fel, hogy egy foglalási gyűjtőoldal (Hotels.com, Bookings.com, Airbnb stb.) elemzői csapatában dolgozunk. A felhasználói kommunikációért felelős csapat két különböző e-mail ötletet kapott a designerektől és szeretnék megtudni, melyik e-mail típus tetszene jobban a felhasználóknak, melyikre kattintanának többet, melyik öszönözné őket jobban vásárlásra stb.
+
+A csapat a teszt miatt kiküldi mindkét e-mail típust ezer-ezer felhasználónak, majd monitorozza, hogy melyik felhasználó nyitotta meg az e-mailt, milyen platformon (asztali gépen vagy mobilon) történt az első megnyitás, hogy a felhasználó végül rákattintott-e a benne található gombra (''Találj egy ajánlatot magadnak!'' vagy ''Foglalás'') és hogy végül mennyi pénzt költött az oldalon.
+
+A mi feladatunk kielemezni egy adatsort és a benne található információk alapján kitalálni, melyik e-mail típus sikeresebb. Ez lesz majd a végleges változat, amit aztán az összes felhasználó megkap, nem csak egy kis részhalmaz.
+
+A felhasznált e-mail típusok a következők, a bal oldali jelöli az adatsorban az A típust, a jobb oldali a B típust.
+
+![A](https://raw.githubusercontent.com/rladies/meetup-presentations_budapest/master/Meetup_2017_10_30/teszteles/hf/Rmd/control.png)
+![B](https://raw.githubusercontent.com/rladies/meetup-presentations_budapest/master/Meetup_2017_10_30/teszteles/hf/Rmd/test.png)
+
+## Az adatsor
+
+Az adatsort a github repóban találjátok [itt](https://raw.githubusercontent.com/rladies/meetup-presentations_budapest/master/Meetup_2017_10_30/teszteles/data/hotels_email.csv) .
+
+```{r adatsor}
+email <- read.csv("https://raw.githubusercontent.com/rladies/meetup-presentations_budapest/master/Meetup_2017_10_30/teszteles/data/hotels_email.csv")
+
+head(email)
+
+```
+
+
+
+Az adatsor az alábbi oszlopokat tartalmazza:
+
+* id -- a felhasználó azonosítója,s
+* category -- melyik e-mailt küldtük ki neki,
+* opened -- megnyitotta-e a felhasználó az e-mailt,
+* platform -- milyen eszközön (Desktop: asztali számítógépen vagy Mobile: mobilon) történt az első megnyitás,
+* clicked -- rákattintott-e a felhasználó a gombra,
+* purchase_value -- mekkora értékben vásárolt a felhasználó.
+
+
+## Feladatok
+
+# 1. Feladat
+
+Hányan nyitották meg az egyes e-mail típusokat? Hányan kattintottak megnyitás után?
+
+```{r opens and clicks}
+## ide jon a kodod
+
+```
+
+# 2. Feladat
+
+Az A vagy a B csoportosok költöttek többet átlagosan? Számoljuk ki a különbséget, végezzünk tesztet és vonjuk le a következtetést!
+
+```{r revenue}
+## ide jon a kodod
+
+```
+
+# 3. Feladat 
+
+Az e-mailt megkapók hány százaléka vásárolt az egyes csoportokban? Számoljuk ki, majd ellenőrizzük le a különbség nagyságát egy teszttel is! Meg tudjuk-e mondani egyértelműen ezek alapján, hogy az A vagy a B e-mail működik-e jobban?
+
+```{r conversion}
+## ide jon a kodod
+```
+
+# 4. Feladat
+
+Van-e különbség a kattintók aránya között a két csoportban? 
+```{r}
+## ide jon a kodod
+```
+
+# 5. Feladat
+
+Az egyes típusokra milyen platformokon kattintottak? Számoljuk ki az arányokat, majd ellenőrizzük le egy teszttel, hogy a platform és a kattintások száma a két típusra függetlennek tekinthető-e!
+Mondjunk ötleteket: mi magyarázhatja a jelenséget?
+
+```{r}
+## ide jon a kodod
+```
+
+
