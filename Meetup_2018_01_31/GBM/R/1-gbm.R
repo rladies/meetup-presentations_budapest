@@ -49,6 +49,8 @@ table(ifelse(phat>0.5,1,0), d_test$dep_delayed_15min)
 
 ggplot(data.frame(phat=phat, y=d_test$dep_delayed_15min)) + geom_density(aes(x=phat, color=as.character(y)))
 
+## do lots of diagnostics/assessment (even if 90% of code!) 
+
 
 gbm.perf(md, plot.it = TRUE)
 

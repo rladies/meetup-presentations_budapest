@@ -29,8 +29,7 @@ dxgb_train <- xgb.DMatrix(data = X_train, label = ifelse(d_train$dep_delayed_15m
 
 ## TRAIN
 system.time({
-  n_proc <- parallel::detectCores()
-  md <- xgb.train(data = dxgb_train, nthread = n_proc, objective = "binary:logistic", 
+  md <- xgb.train(data = dxgb_train, objective = "binary:logistic", 
            nround = 100, max_depth = 10, eta = 0.1)
 })
 
