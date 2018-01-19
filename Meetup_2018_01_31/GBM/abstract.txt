@@ -3,7 +3,6 @@ Gradient Boosting Machines (GBM) in R
 (as requested by the organizers I'll speak Hungarian, but the slides and other material will be in English)
 
 Abstract:
-
 With all the hype about deep learning and "AI", it is not well publicized that for structured/tabular data widely 
 encountered in business applications it is actually another machine learning algorithm, the gradient boosting machine
 (GBM) that most often achieves the highest accuracy. In this talk/workshop I'll introduce GBMs and several 
