@@ -52,3 +52,9 @@ table(ifelse(phat>0.5,1,0), d_test$dep_delayed_15min)
 
 ggplot(data.frame(phat=phat, y=d_test$dep_delayed_15min)) + geom_density(aes(x=phat, color=as.character(y)))
 
+
+## try playing with the hyperparams e.g. max_depth = 2,5,10,15; eta=0.01,0.03,0.1;
+## nround = 100,300,1000; check out further params with ?xgb.train 
+## (re-run from "TRAIN" part above)
+
+
