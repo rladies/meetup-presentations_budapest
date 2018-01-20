@@ -1,0 +1,7 @@
+
+docker build -t rgbm rgbm/
+
+docker run -d -p 8787:8787 -e PASSWORD=<password>  rgbm
+
+
+
