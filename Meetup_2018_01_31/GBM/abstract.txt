@@ -1,0 +1,20 @@
+Gradient Boosting Machines (GBM) in R
+
+(as requested by the organizers I'll speak Hungarian, but the slides and other material will be in English)
+
+Abstract:
+With all the hype about deep learning and "AI", it is not well publicized that for structured/tabular data widely 
+encountered in business applications it is actually another machine learning algorithm, the gradient boosting machine
+(GBM) that most often achieves the highest accuracy. In this talk/workshop I'll introduce GBMs and several 
+implementations (accessible as R packages) and we'll train and tune GBMs on some public datasets using R (hands-on).
+
+Bio:
+Szilard studied Physics in the 90s and obtained a PhD by using statistical methods to analyze the risk of financial 
+portfolios. He worked in finance, then in 2006 moved to California to become the Chief Scientist of a tech company 
+doing everything data (analysis, modeling, data visualization, machine learning, data infrastructure etc). He is
+the founder/organizer of several meetups in Los Angeles (R, data science etc) and the data science community website 
+datascience.la. He is the author of a machine learning benchmark on github (1000+ stars), a frequent speaker at
+conferences (KDD, useR!, R-finance, Crunch, PAW, EARL etc), and he has developed and taught graduate data science
+and machine learning courses as a visiting professor at two universities (UCLA, CEU).
+
+
