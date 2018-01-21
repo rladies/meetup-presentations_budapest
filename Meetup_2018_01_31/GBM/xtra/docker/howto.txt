@@ -1,7 +1,14 @@
 
 docker build -t rgbm rgbm/
 
+
+
 docker run -d -p 8787:8787 -e PASSWORD=<password>  rgbm
 
+
+
+Rscript start-rstudio-dockers.R
+
+docker rm -f $(docker ps -aq)
 
 
