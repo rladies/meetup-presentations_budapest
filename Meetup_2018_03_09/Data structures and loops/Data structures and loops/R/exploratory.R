@@ -17,42 +17,51 @@ eloadasok_cim <- html_text(eloadasok_html)
 ## 2. Feladat: hamozzuk ki az eloadasok relativ URL-jeit! ####
 ################################################################################
 
-
-
-eloadasok_link <- lapply(eloadasok_html, function(mini_url){
-  url_char <- as.character(mini_url)
-  print(url_char)
-  
-  if(strsplit(url_char, split = "\">", fixed = T)[[1]][2] != "</a>" &
-     strsplit(url_char, split = "\">", fixed = T)[[1]][2] != "\n  <br />\n</a>") {
-    gsub(pattern = "<a href=\"",replacement = "http://katonajozsefszinhaz.hu",
-         strsplit(url_char, split = "\">", fixed = T)[[1]][1])  
-  } else {NA}
-})
-
-actors <- lapply(eloadasok_link, function(url_extended){
-  if(!is.na(url_extended)){
-    print(url_extended)
-    play_webpage <- read_html(url_extended)
-    actors_and_directors_html <- html_nodes(play_webpage, ".cell-left-wide-highlighted a")
-    html_text(actors_and_directors_html)  
-  } else {character(0)}
-})
-
-actors_graph <- data.frame(from = character(0),
-                           to = character(0),
-                           title = character(0))
-
-lapply(seq(from = 1, to = length(eloadasok_cim)), function(i){
+aktiv_eloadas_linkek <- c()
+for(i in c(1: length(eloadasok_html))) {
+  url_char <- as.character(eloadasok_html[[i]])
   print(i)
-  if(length(actors[[i]]) >= 2) {
-    actors_graph <<- rbind(actors_graph,
-                           cbind(as.data.frame(t(combn(x = actors[[i]], m = 2, simplify = T))),
-                                 eloadasok_cim[i]))  
+  if(!grepl(pattern = "><", x = url_char,
+           fixed = T)) {
+    elotte <- strsplit(x = url_char,
+                       split = "=\"", fixed = T)[[1]][2]
+    utana <- strsplit(x = elotte, split = "\">", fixed = T)[[1]][1]
+    aktiv_eloadas_linkek <<- c(aktiv_eloadas_linkek, utana)
+  }
+}
+
+################################################################################
+## 3. Feladat: keszitsunk abszolut linkeket a relativ utak
+## "http://katonajozsefszinhaz.hu/" prefixelesevel!
+################################################################################
+
+aktiv_eloadas_abszolut <- paste0("http://katonajozsefszinhaz.hu/",
+                                 aktiv_eloadas_linkek)
+
+################################################################################
+## 4. Feladat: Scrape-elljuk az osszes eloadas adatlapjat es gyujtsuk ki 
+## a szereploket
+################################################################################
+
+szineszek <- list()
+
+lapply(aktiv_eloadas_abszolut, function(eloadas_url){
+  print(eloadas_url)
+  eloadas_webpage <- read_html(eloadas_url)
+  szinesz_html <- html_nodes(eloadas_webpage, '.eloadason-szinesz-link')
+  szineszek[[eloadas_url]] <<- html_text(szinesz_html)
+})
+
+################################################################################
+## 5. eladat: Menjunk vegig a listan es gyujtsuk ki, a kedvenc szineszeink
+## jatszanak-e egyutt
+################################################################################
+
+lapply(c(1:length(szineszek)), function(index){
+  if(any(szineszek[[index]] == "Keresztes Tamás") &
+     any(szineszek[[index]] == "Fekete Ern\U0151")
+     ) {
+    print(names(szineszek)[[index]])
   }
   T
 })
-
-colnames(actors_graph) <- c("from", "to", "title")
-
-
