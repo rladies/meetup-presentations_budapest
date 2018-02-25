@@ -3,19 +3,21 @@ library('rvest')
 library('plyr')
 library('dplyr')
 
-#######################
-####################### 1 Feladat: talaljuk ki, mit jatszanak mostanaban
-####################### a Katona szinpadan!
+################################################################################
+## 1. feladat: talaljuk ki, mit jatszanak mostanaban a Katon szinpadan! ####
+################################################################################
 
 url <- "http://katonajozsefszinhaz.hu/eloadasok/repertoar"
 webpage <- read_html(url)
 
 eloadasok_html <- html_nodes(webpage, '#contents-news a')
-#eloadasok_cim <- html_text(eloadasok_html)
+eloadasok_cim <- html_text(eloadasok_html)
 
-######################
-######################
-######################2. Feladat: talaljuk meg innen az eloadasok linkjet! 
+################################################################################
+## 2. Feladat: hamozzuk ki az eloadasok relativ URL-jeit! ####
+################################################################################
+
+
 
 eloadasok_link <- lapply(eloadasok_html, function(mini_url){
   url_char <- as.character(mini_url)
