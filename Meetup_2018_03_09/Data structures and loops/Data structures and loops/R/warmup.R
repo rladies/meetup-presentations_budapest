@@ -78,4 +78,4 @@ library(purrr)
 ##  Szamoljuk az x data frame elso oszlopanak negyzetosszeget azokon a helyeken,
 ##  ahol a masodik oszlop erteke FALSE! 
 
-negyzetosszeg <- sum(x$a * !x$b)
+
