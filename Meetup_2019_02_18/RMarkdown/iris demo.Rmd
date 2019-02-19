@@ -1,0 +1,102 @@
+---
+title: "Iris teszt elemzés"
+author: "Gergely"
+date: "`r Sys.time()`"
+output: html_document
+---
+
+Hello, markdown! Ez egy egyszerű szöveges dokumentum, 
+a szöveget a markdown jelölőnyelv segítségével tudunk formázni.
+
+Például írhatunk szöveget *dőlt betűkkel*, **vastagon szedve** vagy akár ***dőlten és vastagon szedve*** is, de írhatunk ~~áthúzott szöveget~~ (altgr+1) vagy `kódrészletet` (altgr+7) is.
+
+Egy kód blokk így néz ki:
+
+```
+1 + 3
+plot(iris)
+```
+
+R szintaxis kiemeléssel ugyanez:
+
+```r
+1 + 3
+plot(iris)
+```
+
+Az R kód tényleges lefuttatása:
+
+```{r echo = FALSE, message = FALSE}
+library(ggplot2)
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) + geom_point() + geom_smooth()
+```
+
+Az `iris` adattömb `r nrow(iris)` elemet tartalmaz:
+
+```{r echo=FALSE}
+library(knitr)
+kable(table(iris$Species))
+```
+
+Mostantól nem szeretnénk az R kódot megjeleníteni:
+
+```{r}
+library(knitr)
+opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+```{r}
+1 + 2
+```
+
+## További formázási lehetőségek
+
+Lista:
+
+* foo
+* bar
+
+Számozott lista:
+
+1. foo
+2. bar
+
+Automatikusan generált lista:
+
+```{r}
+library(pander)
+panderOptions("p.copula", " és ")
+pander(as.list(levels(iris$Species)))
+```
+
+`r length(levels(iris$Species))` típust találtunk: `r pander(levels(iris$Species))`
+
+## Egy lineáris modell
+
+```{r}
+pander(lm(Sepal.Width ~ Sepal.Length, iris))
+```
+
+## Dinamikus riport
+
+```{r}
+library(shiny)
+inputPanel(
+    sliderInput('n', label = 'Klaszterek száma', min = 1, max = 10, value = 3),
+    selectInput('algorithm', label = 'Algoritmus', 
+                choices = c("Hartigan-Wong", "Lloyd", "Forgy", "MacQueen")))
+
+renderPlot({
+  clusters <- kmeans(iris[, 1:4], input$n, algorithm = input$algorithm)
+  ggplot(iris, aes(Sepal.Length, Sepal.Width, color = factor(clusters$cluster))) + geom_point()
+})
+```
+
+## További referenciák:
+
+* [Donald Knuth: *Literate Programming*. useR! 2016](https://channel9.msdn.com/Events/useR-international-R-User-conference/useR2016/Literate-Programming)
+* [R Markdown cheatsheet](https://d33wubrfki0l68.cloudfront.net/374f4c769f97c4ded7300d521eb59b24168a7261/c72ad/lesson-images/cheatsheets-1-cheatsheet.png)
