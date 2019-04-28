@@ -164,8 +164,8 @@ gs_ws_new(wb_GoT, "GoT_for_calendar", input = dt_got_cal)
 #### ---- Calendar műveletek ----
 
 ### setting up the Google authentication information 
-key <- "104026675371-23co1kktt2pl3lsra9m2321h8p2r6gpt.apps.googleusercontent.com"
-secret <- "VL9mibPs38q30QAtJzTEGpsN"
+key <- "YOUR_KEY_HERE"
+secret <- "YOUR_SECRET_HERE"
 
 # Authentikáció beállítása a Google Calendar-hoz
 # - Itt fel fog ugrani egy Google bejelentkező ablak, lépjünk be
