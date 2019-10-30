@@ -1,18 +1,26 @@
-################################
 # R LADIES - Beginner workshop
 # October 29, 2019
-################################
+
 
 # Keyboard shortcuts: 
 # add new section: crtl + shft + R 
+
+# Test --------------------------------------------------------------------
+
+
 # comment selected parts of scripts: ctrl + shft + c
 # <- : Alt + - 
+# Help > Keyboard Shortcut Help ctrl + shift + K
 
 
 # A. BASICS ----------------------------------------------------------------
 
 # basic arithmetic operations 
 1+2
+
+1+2+   ## If we give it an incomplete command then it returns +.
+       ## Press esc button to return to a new line or merges with the following line.
+
 5*8
 5/9
 log(2)
@@ -20,6 +28,7 @@ sqrt(2)
 abs(-4)
 
 # assign values to variables
+## variable names in R are case sensitive 
 vektor <- "a"
 vektor
 
@@ -37,20 +46,25 @@ log <-  c(TRUE, FALSE, FALSE, TRUE)  # logical vector
 # extract elements from vector by position
 chr[2]
 
+# we can also apply built-in functions to the elements of a vector
+sum(num)
+max(num)
+
 
 vektor <-  letters[seq(1:3)]
 vektor <-  LETTERS[seq(1:3)]
 vektor <-  letters[which(letters == "h") : which(letters == "z")]
 
-# matrices: like an Excel sheet containing multiple rows and columns. Combination of multiple vectors with the same types (numeric, character or logical).
+# matrices: like an Excel sheet containing multiple rows and columns. 
+# Combination of multiple vectors with the same types (numeric, character or logical).
 t <- matrix(
-       1:12,                 # the data components
-       nrow=4,               # number of rows
-       ncol=3,               # number of columns
-       byrow = FALSE)        # fill matrix by columns
-  
+  1:12,                 # the data components
+  nrow=4,               # number of rows
+  ncol=3,               # number of columns
+  byrow = FALSE)        # fill matrix by columns
+
 # print the matrix
-  t                         
+t                         
 
 # extract elements of matrices
 t[2,3] # 2nd row and 3rd column
@@ -61,12 +75,14 @@ t[1,]  # 1st row
 fruits <- factor(c("apple", "orange", "grape", "plum"))
 levels(fruits)
 
-# data frames: A data frame is more general than a matrix, in that different columns can have different basic data types. Data frame is the most common data type we are going to use in this class.
+# data frames: A data frame is more general than a matrix, in that different columns can have different
+# basic data types. Data frame is the most common data type we are going to use in this class.
 
 
 
 # B. LOOK AT YOUR DATA -------------------------------------------------------
 
+# I. WORKING WITH BASE PACKAGES  ------------------------------------------
 
 # 0. PREPARATION ----------------------------------------------------------
 
@@ -78,22 +94,36 @@ rm(list=ls())
 # install & load packages
 install.packages("dplyr")
 install.packages("ggplot2")
+install.packages("RCurl")
 library(dplyr)
 library(ggplot2)
+library(RCurl)
 
 # Getting some help
 ?install.packages
 help("dplyr")
 
-# Paths and working directory
-getwd()
-setwd("C:\\Users\\user\\Documents\\eszter\\other\\r ladies\\kezdo_workshop\\")
 
 ### (Files/More/Set As Working directory)
 # setwd("~/eszter/other/r ladies/kezdo_worskhop")
 
 
-# read data
+# read data from web
+x <- getURL("https://raw.githubusercontent.com/rladies/meetup-presentations_budapest/master/Meetup_2019_10_29/world_dev_indicators.csv")
+world_dev_indicators <- read.csv(text = x, stringsAsFactors = FALSE)
+
+# y <- getURL("https://raw.githubusercontent.com/rladies/meetup-presentations_budapest/master/Meetup_2019_10_29/countries_to_continents.txt")
+# countries_to_continents <-  read.csv(text = x, stringsAsFactors = FALSE)
+
+# read data from your computer: 
+# Paths and working directory
+getwd()
+setwd("C:/Users/user/Desktop/r-ladies-kezdo")
+
+### (Files/More/Set As Working directory)
+### From the Menu: Session > Set working directory > Choose Directory
+
+# import data
 world_dev_indicators <- read.csv("world_dev_indicators.csv", stringsAsFactors=FALSE)
 countries_to_continents <- read.csv("countries_to_continents.txt", stringsAsFactors=FALSE)
 
@@ -101,9 +131,6 @@ countries_to_continents <- read.csv("countries_to_continents.txt", stringsAsFact
 # Match countries with continents
 data<- merge(world_dev_indicators, countries_to_continents, by = "Country")
 
-
-
-# I. WORKING WITH BASE PACKAGES  ------------------------------------------
 
 
 # 1. OVERVIEW OF THE DATA -------------------------------------------------
@@ -114,7 +141,8 @@ head(data)
 head(data, 10)
 View(head(data, 10))
 str(data) # Displays by default 100, has no return values
-str(data, list.len =13)
+str(data, list.len =13) # numeric; maximum number of list elements to display within a level.
+?str
 summary(data)
 names(data) # colnames(data) does the same
 
@@ -151,7 +179,7 @@ NA_ratio_per_variables <- as.data.frame(apply(as.data.frame(lapply(data,is.na)),
 
 # rename columns
 names(data)   # list variable names 
-              # colnames(data) does the same
+# colnames(data) does the same
 
 newnames <- c("country", "year", "time_code", "country_code", "gdp", "co2", "unempl", "lifeexp", "mortality", 
               "pop", "pop_above65", "continent", "subregion")
@@ -197,16 +225,19 @@ with(data = data, expr = {
 # II. WORKING WITH DPLYR AND GGPLOT2 --------------------------------------
 
 
-# 3. DPLYR: Descriptive language for the steps of data manipulation --------------------------
+# 4. DPLYR: Descriptive language for the steps of data manipulation --------------------------
 # cheatsheet: www.rstudio.com/resources/cheatsheets
 
-# tidy data: 1 row / observation
+# tidy data principles: 
+  # 1. each variable -> a column
+  # 2. observation -> row
+  # 3. each type of obs. unit forms a table
 
-# |install.packages("dplyr")
+# install.packages("dplyr")
 library(dplyr)
 
 # two ways:
-# a. Without the pipe syntax: -----------------------
+# 4a. Without the pipe syntax: -----------------------
 
 # rename columns 
 data$year_code <-  data$time_code
@@ -248,7 +279,7 @@ View(top_n(data, -100, gdp))
 View(count(data, country))
 
 
-# b. With the pipe syntax: %>% -----------------------
+# 4b. With the pipe syntax: %>% -----------------------
 # to use multiple functions in a row
 
 # rename specific column(s)
@@ -273,7 +304,7 @@ data4 <- data %>%
   arrange(-pop_median)
 
 
-# 4. DRAW SOME PLOTS W GGPLOT2 ------------------------------------------------------
+# 5. DRAW SOME PLOTS W GGPLOT2 ------------------------------------------------------
 library(ggplot2)
 
 # bar graphs
@@ -334,7 +365,7 @@ data %>%
   geom_smooth(method = "lm", se = FALSE, colour="#88398A")
 
 
- # export, save data
+# export, save data
 setwd("")
 write.csv(data3, "gdp_sum.csv")
 
@@ -343,10 +374,12 @@ write.csv(data3, "gdp_sum.csv")
 # Useful sources --------------------------
 
 # swirl: https://swirlstats.com/ 
-  # an R package designed to teach you R straight from the command line. 
-  # Swirl provides exercises and feedback from within your R session to help you learn in a structured, interactive way.
+# an R package designed to teach you R straight from the command line. 
+# Swirl provides exercises and feedback from within your R session to help you learn in a structured, interactive way.
 
 # Beginner R Workshop written in R Markdown 
 # https://rstudio-pubs-static.s3.amazonaws.com/222325_ad39df865a984159af4861d9194d079b.html
+
+# Hands on exercises in the meetup folder
 
 
