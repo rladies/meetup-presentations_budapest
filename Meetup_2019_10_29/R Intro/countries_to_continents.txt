@@ -1,0 +1,120 @@
+Country,Continent,Sub-Region
+Afghanistan,Asia,Southern Asia
+Algeria,Africa,Northern Africa
+Andorra,Europe,Southern Europe
+Antigua and Barbuda,Americas,Caribbean
+Argentina,Americas,South America
+Armenia,Asia,Western Asia
+Australia,Oceania,Australia and New Zealand
+Austria,Europe,Western Europe
+Azerbaijan,Asia,Western Asia
+Bahamas,Americas,Caribbean
+Bangladesh,Asia,Southern Asia
+Belarus,Europe,Eastern Europe
+Belgium,Europe,Western Europe
+Bosnia and Herzegovina,Europe,Southern Europe
+Brazil,Americas,South America
+Bulgaria,Europe,Eastern Europe
+Burkina Faso,Africa,Western Africa
+Cambodia,Asia,South-Eastern Asia
+Cameroon,Africa,Middle Africa
+Canada,Americas,Northern America
+Central African Republic,Africa,Middle Africa
+Chile,Americas,South America
+China,Asia,Eastern Asia
+Colombia,Americas,South America
+Costa Rica,Americas,Central America
+Croatia,Europe,Southern Europe
+Cuba,Americas,Caribbean
+Cyprus,Asia,Western Asia
+Czech Republic,Europe,Eastern Europe
+Denmark,Europe,Northern Europe
+Dominican Republic,Americas,Caribbean
+Ecuador,Americas,South America
+Egypt,Africa,Northern Africa
+El Salvador,Americas,Central America
+Estonia,Europe,Northern Europe
+Ethiopia,Africa,Eastern Africa
+Fiji,Oceania,Melanesia
+Finland,Europe,Northern Europe
+France,Europe,Western Europe
+Georgia,Asia,Western Asia
+Germany,Europe,Western Europe
+Ghana,Africa,Western Africa
+Greece,Europe,Southern Europe
+Guatemala,Americas,Central America
+Honduras,Americas,Central America
+Hong Kong (S.A.R.),Asia,Eastern Asia
+Hungary,Europe,Eastern Europe
+Iceland,Europe,Northern Europe
+India,Asia,Southern Asia
+Indonesia,Asia,South-Eastern Asia
+"Iran, Islamic Republic of...",Asia,Southern Asia
+Ireland,Europe,Northern Europe
+Israel,Asia,Western Asia
+Italy,Europe,Southern Europe
+Japan,Asia,Eastern Asia
+Kazakhstan,Asia,Central Asia
+Kenya,Africa,Eastern Africa
+Kuwait,Asia,Western Asia
+Kyrgyzstan,Asia,Central Asia
+Latvia,Europe,Northern Europe
+Lebanon,Asia,Western Asia
+Lithuania,Europe,Northern Europe
+Luxembourg,Europe,Western Europe
+Madagascar,Africa,Eastern Africa
+Malaysia,Asia,South-Eastern Asia
+Malta,Europe,Southern Europe
+Mexico,Americas,Central America
+"Micronesia, Federated States of...",Oceania,Micronesia
+Montenegro,Europe,Southern Europe
+Morocco,Africa,Northern Africa
+Mozambique,Africa,Eastern Africa
+Myanmar,Asia,South-Eastern Asia
+Nepal,Asia,Southern Asia
+Netherlands,Europe,Western Europe
+New Zealand,Oceania,Australia and New Zealand
+Nigeria,Africa,Western Africa
+Norway,Europe,Northern Europe
+Other Country (Not Listed Above),Asia,Western Asia
+Pakistan,Asia,Southern Asia
+Panama,Americas,Central America
+Paraguay,Americas,South America
+Peru,Americas,South America
+Philippines,Asia,South-Eastern Asia
+Poland,Europe,Eastern Europe
+Portugal,Europe,Southern Europe
+Republic of Moldova,Europe,Eastern Europe
+Romania,Europe,Eastern Europe
+Russian Federation,Europe,Eastern Europe
+Saudi Arabia,Asia,Western Asia
+Senegal,Africa,Western Africa
+Serbia,Europe,Southern Europe
+Singapore,Asia,South-Eastern Asia
+Slovakia,Europe,Eastern Europe
+Slovenia,Europe,Southern Europe
+South Africa,Africa,Southern Africa
+South Korea,,
+Spain,Europe,Southern Europe
+Sri Lanka,Asia,Southern Asia
+Sweden,Europe,Northern Europe
+Switzerland,Europe,Western Europe
+Syrian Arab Republic,Asia,Western Asia
+Taiwan,Asia,Western Asia
+Thailand,Asia,South-Eastern Asia
+The former Yugoslav Republic of Macedonia,Europe,Southern Europe
+Trinidad and Tobago,Americas,Caribbean
+Tunisia,Africa,Northern Africa
+Turkey,Asia,Western Asia
+Uganda,Africa,Eastern Africa
+Ukraine,Europe,Eastern Europe
+United Arab Emirates,Asia,Western Asia
+United Kingdom,Europe,Northern Europe
+United Republic of Tanzania,Africa,Eastern Africa
+United States,Americas,Northern America
+Uruguay,Americas,South America
+Uzbekistan,Asia,Central Asia
+"Venezuela, Bolivarian Republic of...",Americas,South America
+Viet Nam,Asia,South-Eastern Asia
+Zambia,Africa,Eastern Africa
+Zimbabwe,Africa,Eastern Africa

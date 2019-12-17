@@ -1,0 +1,307 @@
+                                                              OktóbeR
+                                                              
+Az exploratory data analysis, röviden EDA az adat megismerésére irányuló módszer, aminek fontos eleme a vizualizáció. Az EDA alapvető fontosságú első lépés, megalapozza az adattisztítást, az adattranszformációt és a hipotézis felállítását. Miért? Mert ahhoz, hogy az adatot megtisztítsuk, tudnunk kell hol „piszkos” és milyen problémák vannak vele, az adatok transzformálása előtt pedig érdemes megismerni, hogy milyen értékekből tudunk dolgozni. A folyamat másik célja mintázatok, összefüggések megfigyelése az adathalmazban, amik mentén az elemzés későbbi lépéseiben tovább haladhatunk.
+
+1. A szükséges könyvtárak beimportálása és a fájl beolvasása és megtekintése
+
+```{r}
+
+library(data.table) #adatsruktúra
+library(dplyr) #adatmanipulciós eszközök
+library(ggplot2) #adatvizualizáció
+library(tidyr) #adattisztítás
+
+cocktails <- fread('./Cocktails.csv')
+cocktails
+```
+
+2. A struktúra megismerése
+
+Első körben szeretnénk megnézni, hogy:
+
+1. hány sorunk van
+2. hány oszlopunk van
+3. milyen nevű oszlopaink vannak
+4. ezek milyen típusú adatokat tartalmaznak 
+5. mekkora a duplikációszám
+
+Az str() függvény ezek küzül az összes, a summary() függvénypedig közvetelnül a 3., közvetetten az első 2 és a 4. kérdést megválaszolja.
+
+```{r}
+str(cocktails)
+summary(cocktails)
+```
+
+Ezeket én kevésbé kedvelem, sok oszlop esetén nem átlátható az eredményük. <br>
+A válaszokat jobban szeretem külön megkapni, úgy mint:
+
+```{r}
+row_count <- nrow(cocktails)
+col_count <- ncol(cocktails)
+col_type <- sapply(cocktails, typeof)
+duplication_count <- nrow(cocktails) - uniqueN(cocktails)
+
+cat("1. Sorok száma: ", row_count)
+cat("\n")
+cat("2. Oszlopok száma: ", col_count)
+cat("\n")
+cat("3. Oszlopnevek:")
+colnames(cocktails)
+cat("3-4. Oszlopnevek és az adatok típusa:")
+col_type
+cat("5. Duplikációszám: ", duplication_count)
+```
+
+A sorok száma egyenlőre tartalmazza a duplikációkat is, illetve a duplikációszám még félrevezethető lehet, mert a unique() és a uniqueN() függvény egyedinek kezel minden olyan értéket, ami mint szöveg egyedi
+
+Az oszlopok neveit nézve látszik, hogy praktikus lenne átnevezni az első oszlopot. Ha nem férünk hozzá a forrásfájlhoz, vagy nem akarjuk módosítani, ezt az R-en belül is megtehetjük, többféleképpen. A legegyszerűbben talán a dplyr könyvtárral.
+
+```{r}
+cocktails <- cocktails %>% 
+  rename(
+    CoktailName = "Cocktail Name"
+    )
+```
+
+Ha szeretnénk törölhetünk oszlopokat az adattáblából.
+
+```{r}
+cocktails <- select(cocktails,-c(Ingredients, Garnish))
+```
+
+3. Az értékek megsimerése
+
+Az értékek megismerését is megközelíthetjük egyből a számok oldaláról. Fontos tudnunk, hogy: <br>    
+
+6. mekkora az különböző értékek száma oszloponként
+7. mekkora a hiányzó adat mértéke oszloponként
+
+A különböző és a hiányzó értékek számának meghatározására is létezik függvény R-ben,
+
+```{r}
+unique_count <- sapply(cocktails, function(y) uniqueN(y))
+na_count <-sapply(cocktails, function(y) sum(length(which(is.na(y)))))
+
+cat("6. Különböző értékek száma oszloponként:")
+unique_count
+cat("7. A hiányzó értékek száma oszloponként:")
+na_count
+```
+
+de félrevezethetőek lehetnek, mert ahogy korábban írtam, a unique() és a uniqueN() függvény egyedinek kezel minden olyan értéket, ami mint szöveg egyedi
+
+```{r}
+unique(cocktails$Location)
+```
+
+és mert a hiányzó értéket sokféleképpen jelölhetik, az is.na() függvény viszont csak az "NA" értékeket számolja össze.
+
+```{r}
+tail(cocktails, 3)
+```
+
+```{r}
+cocktails$Bartender[is.na(cocktails$Bartender)]
+cocktails$Bartender[cocktails$Bartender == "null" | cocktails$Bartender == "nan"]
+```
+
+A kérdések pontosabb megválaszolásához és egyébként a későbbi elemzések sikere érdekében saját függvényeket kell írnunk, amik úgy alakítják át az adatot, hogy a beépített fügvényekkel pontos válaszokat kapjunk. Ezekhez pedig pontosabban ismernünk kell az értékeket.
+Mivel a beépített függvényeket még használni fogom egy függvénybe rakom őket.
+
+```{r}
+desc_stat <- function(df){
+    duplication_count <- nrow(df) - uniqueN(df)
+    unique_count <- sapply(df, function(y) uniqueN(y))
+    na_count <-sapply(df, function(y) sum(length(which(is.na(y)))))
+    row_count <- nrow(df)
+    col_count <- ncol(df)
+    col_type <- sapply(df, typeof)
+
+    cat("1. Sorok száma: ", row_count)
+    cat("\n")
+    cat("2. Oszlopok száma: ", col_count)
+    cat("\n")
+    cat("3-4. Oszlopnevek és az adatok típusa:")
+    cat(col_type)
+    cat("\n")
+    cat("5. Duplikációszám: ", duplication_count)
+    cat("\n")
+    cat("6. Különböző értékek száma oszloponként:")
+    cat(unique_count)
+    cat("\n")
+    cat("7. A hiányzó értékek száma oszloponként:")
+    cat(na_count)
+}
+```
+
+4. Vizualizációs eszközök
+
+Mérési szintek
+
+<font size="4">Alpvetően 4 mérési szintet különböztetünk meg.
+
+- **nominális**: a változó értékei nem sorbarendezhetőek, nem végezhetőek rajtuk számítások.
+- **ordinális**: a változó értékei között van hierarchia, de nem végezhetőek rajtuk számítások.
+
+Ezeket közösen alacsony mérési szintű változóknak nevezzük.
+
+- **intervallum-skála**: a változó értékei sorbarendezhetőek, értelmezhető rajtuk az összeadás és a kivonás, de a szorzás és az osztás nem, mert a 0 önkényesen választott.
+- **arány-skála**: a változó értékei sorbarendezhetőek és mind a négy matematikai alapművelet értelmezhető rajtuk. 
+
+Ezeket közösen magas mérési szintű változóknak nevezzük.
+
+A mi esetünkben melyik oszlopot milyen mérési szintűnek kategorizálnánk?
+
+Mérési szintek és vizualizáció
+
+Az alacsony mérési szintű változók ábrázolásához a két legáltalánosabb vizualizáviós eszköz a Pie Chart
+
+```{r}
+create_pie <- function(column, title = "Pie") {
+    c <- table(column)
+    l <- paste(names(c), "\n", c, sep="")
+    pie(c, labels = l, 
+    main=title)
+}
+```
+
+és a Bar Plot
+
+```{r}
+create_bar <- function(column, title = "Bar", horiz = FALSE){
+    c <- table(column)
+    barplot(c, main=title, horiz=horiz, las = 2)
+}
+```
+
+A magas mérési szintű változók esetében a változó értékeinek eloszlását vizsgáljuk. <br> Erre jó eszköz egy egyszerű Boxplot,
+
+```{r}
+create_box <- function(column, title = "Box", notch = FALSE, xlabel = "", ylabel = ""){
+    boxplot(column, main=title, notch = notch,
+    xlab=xlabel, ylab=ylabel)
+}
+```
+
+a Violinplot,
+
+```{r}
+create_violin <- function(column, plotcolor = "LightGreen", boxcolor = "red", func = mean, geoms = "point", geom_size = 14, geom_color = "blue"){    
+ggplot(cocktails, aes(x="", y = column)) +
+    geom_violin(fill= plotcolor) +
+    geom_boxplot(width=0.1, color=boxcolor, alpha=0.2) +
+    stat_summary(fun.y=func, geom=geoms, shape=20, size=geom_size, color=geom_color)
+}
+```
+
+vagy a Kummulatív Eloszlás Függvény.
+
+```{r}
+create_ecdf <- function(column, title = "ecdf"){
+    plot(ecdf(column), main = title)
+}
+```
+
+Ezekkel a vizualizációkkal könnyebben kiszűrhetjük a null értékeket és az adatokat látva eldönthetjük, vannak-e értékek, amik valójában ugyanazt jelentik, csak máshogy írták/máshogy jelölték őket. Ezek a vizualizációk segíthetnek olyan függvények megírásában, amik alkalmazása után a feltett kérdésekre pontosabb választ kaphatunk.
+
+5. Adattisztítás
+
+Szeretném, ha az eredeti dataframe-et nem érintenék ezek a változások, ezért egy új dataframe-et hozok létre, amiben mindent kisbetűssé teszek és eldobom a duplikációkat.
+
+```{r}
+cocktails_clean <- cocktails %>% mutate(CoktailName = tolower(CoktailName), Bartender = tolower(Bartender), 
+                          Company = tolower(Company), Location = tolower(Location),
+                          Glassware = tolower(Glassware)) %>% distinct()
+```
+
+Ezek után a statisztikánk már máshogy nézki. A duplikációk elvetésével csökkent a sorok száma, a kisbetűssé tétellel pedig a különböző értékek száma.
+
+```{r}
+desc_stat(cocktails)
+```
+
+```{r}
+desc_stat(cocktails_clean)
+```
+
+Itt az ideje jobban megnézni az értékeket.
+
+Location
+
+```{r}
+unique(cocktails_clean$Location)
+```
+
+create_ecdf(cocktails_clean$AgeOfBartender)
+```{r}
+cocktails_clean$Location[cocktails_clean$Location == "" | cocktails_clean$Location == "nan" | cocktails_clean$Location == "n/a" | cocktails_clean$Location == "na" | cocktails_clean$Location == "null"] <- NA
+```
+
+```{r}
+desc_stat(cocktails_clean)
+```
+
+Ami még látszik, hogy san francisco neve elírva is szerepel, a 'uk' pedig a 'united kingdom'-ra utalhat. Ezeket javítsuk.
+
+```{r}
+cocktails_clean$Location[cocktails_clean$Location == "san fransisco"] <- "san francisco"
+cocktails_clean$Location[cocktails_clean$Location == "uk"] <- "united kingdom"
+```
+
+```{r}
+create_bar(cocktails_clean$Location)
+```
+
+Glassware
+
+```{r}
+unique(cocktails_clean$Glassware)
+```
+
+```{r}
+cocktails_clean$Glassware[cocktails_clean$Glassware == "" | cocktails_clean$Glassware == "nan" | cocktails_clean$Glassware == "n/a" | cocktails_clean$Glassware == "na" | cocktails_clean$Glassware == "null"] <- NA
+```
+
+```{r}
+create_pie(cocktails_clean$Glassware)
+```
+
+OfficialRating
+
+```{r}
+create_bar(cocktails$OfficialRating)
+```
+
+AgeOfBartender
+
+```{r}
+create_ecdf(cocktails_clean$AgeOfBartender)
+```
+
+```{r}
+cocktails_clean$AgeOfBartender[cocktails_clean$AgeOfBartender > 120 | cocktails_clean$AgeOfBartender < 18 ] <- NA
+```
+
+```{r}
+create_ecdf(cocktails_clean$AgeOfBartender)
+```
+
+CocktailName, Bartender, Company
+
+```{r}
+cocktails_clean$CoktailName[cocktails_clean$CoktailName == "" | cocktails_clean$CoktailName == "nan" | cocktails_clean$CoktailName == "n/a" | cocktails_clean$CoktailName == "na" | cocktails_clean$CoktailName == "null"] <- NA
+cocktails_clean$Bartender[cocktails_clean$Bartender == "" | cocktails_clean$Bartender == "nan" | cocktails_clean$Bartender == "n/a" | cocktails_clean$Bartender == "na" | cocktails_clean$Bartender == "null"] <- NA
+cocktails_clean$Company[cocktails_clean$Company == "" | cocktails_clean$Company == "nan" | cocktails_clean$Company == "n/a" | cocktails_clean$Company == "na" | cocktails_clean$Company == "null"] <- NA
+```
+
+
+6. Adattranszformáció
+
+```{r}
+cocktails_clean <- cocktails_clean %>% mutate(AgeCategory=cut(AgeOfBartender, breaks=c(18, 30, 40, 50, Inf), labels=c("18-30","30-40","40-50","50+")))
+```
+
+```{r}
+create_bar(cocktails_clean$AgeCategory)
+```
+
